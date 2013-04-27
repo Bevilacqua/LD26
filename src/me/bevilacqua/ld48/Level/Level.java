@@ -11,7 +11,7 @@ public class Level {
 	private int height;
 	private int width;
 	
-	private TiledMap map;
+	public TiledMap map; //I know i shouldn't do this sorry Java gods have mercy
 	
 	public Level(String mapPath , String Name) throws SlickException {
 		this.mapPath = mapPath;

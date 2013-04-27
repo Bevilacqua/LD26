@@ -1,0 +1,15 @@
+Collision Chart:
+
+[-1] No collision any directions
+
+[0]Collision up
+[1]Collision left
+[2]Collision right 
+[3]Collision down
+
+[-2]Hazard collision  (If any part of image rests on hazard instant death no TRUE collision but rather a check)
+
+[-3]Error
+
+
+NOTE: when checking for collision from id if id is -2 than that tile is not availible
