@@ -35,30 +35,29 @@ public class Play extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int Delta) throws SlickException {	
 		handler.update(); //That was terrifying DO NOT FORGET THIS!!!
-		playerMovementID = player.update();
-		player.Collision();
+		playerMovementID = player.update(Delta);
 		
 		if(playerMovementID != -1) 
 		if(playerMovementID == 0) {
-			if( y > 0) {
+			if( y > 0 ) {
 				y -= 1;
 			}
 		}
 		
 		if(playerMovementID == 1) {
-			if(x > 0) {
+			if(x > 0 ) {
 				x -= 1;
 			}
 		}
 		
 		if(playerMovementID == 3) {
-			if(y < level.getHeight() - 19) { //TODO: fix height limits
+			if(y < level.getHeight() - 19 ) { //TODO: fix height limits
 				y += 1;
 			}
 		}
 		
 		if(playerMovementID == 2) {
-			if(x < level.getWidth() - 25) {
+			if(x < level.getWidth() - 25 ) {
 				x += 1;
 			}
 		}
