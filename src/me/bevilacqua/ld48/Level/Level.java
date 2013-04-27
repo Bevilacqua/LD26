@@ -23,6 +23,7 @@ public class Level {
 		map = new TiledMap(mapPath);
 		height = map.getHeight();
 		width = map.getWidth();
+		System.out.println("Loading map Name: " + Name + " Width: " + width + " Height: " + height);
 	}
 	
 	public void render(int x , int y , int startX , int startY) {

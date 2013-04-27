@@ -1,5 +1,6 @@
 package me.bevilacqua.ld48.Mob;
 
+import me.bevilacqua.ld48.Game;
 import me.bevilacqua.ld48.InputHandler;
 import me.bevilacqua.ld48.Level.Level;
 
@@ -56,14 +57,14 @@ public abstract class Mob {
 			}
 		}
 		
-		if(y < level.getWidth()) {
+		if(x < Game.WIDTH - 32) {
 			if(Direction == 2) { 
 				x += pace;
 				currentLengthR += pace;
 			}
 		}
 		
-		if(y < level.getHeight()) {
+		if(y < Game.HEIGHT - 32) { //TODO: Fix this height restraint aswell
 			if(Direction == 3) { 
 				y += pace;
 				currentLengthD += pace;
@@ -89,7 +90,7 @@ public abstract class Mob {
 		if(handle.Right()) {
 			move(2);
 		}
-		System.out.println(currentLengthD);
+//		System.out.println(currentLengthD);
 		if(currentLengthU >= blockLength) { currentLengthU = 0 ; return 0;}
 		if(currentLengthL >= blockLength) { currentLengthL = 0 ; return 1;}
 		if(currentLengthR >= blockLength) { currentLengthR = 0 ; return 2;}
