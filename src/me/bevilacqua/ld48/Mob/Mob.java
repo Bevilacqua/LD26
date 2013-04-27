@@ -1,6 +1,5 @@
 package me.bevilacqua.ld48.Mob;
 
-import me.bevilacqua.ld48.Game;
 import me.bevilacqua.ld48.InputHandler;
 import me.bevilacqua.ld48.Level.Level;
 
@@ -15,6 +14,11 @@ public abstract class Mob {
 	protected float pace = 1;
 	protected InputHandler handle;
 	protected Level level;
+	protected int elapsedTime;
+	protected final int DELAY = 5;
+	
+	protected byte upID , downID , leftID , rightID;
+	protected boolean collideUP = true, collideDOWN , collideLEFT , collideRIGHT;
 	
 	protected final byte blockLength = 32;
 	protected byte currentLengthL , currentLengthR , currentLengthU , currentLengthD;
@@ -42,54 +46,30 @@ public abstract class Mob {
 		}
 	}
 	
-	protected void move(int Direction) {
-		if(y > 0) { 
-			if(Direction == 0) {
-				y -= pace;
-				currentLengthU += pace;
-			}
-		}
-		
-		if(x > 0) {
-			if(Direction == 1) { 
-				x -= pace;
-				currentLengthL += pace;
-			}
-		}
-		
-		if(x < Game.WIDTH - 32) {
-			if(Direction == 2) { 
-				x += pace;
-				currentLengthR += pace;
-			}
-		}
-		
-		if(y < Game.HEIGHT - 32) { //TODO: Fix this height restraint as well
-			if(Direction == 3) { 
-				y += pace;
-				currentLengthD += pace;
-			}
-			
-		}		
-	}
+	public abstract void move(int dir , int Delta);
 	
 	public void render() {
 		image.draw(Math.round(x), Math.round(y));
 	}
 	
-	public byte update() {
-		if(handle.Up()) {
-			move(0);
+	public byte update(int Delta) {
+				
+		if(elapsedTime > DELAY) {
+			if(handle.Up() && this.collideUP == false) {
+				move(0 , Delta);
+			}
+			if(handle.Down() && this.collideDOWN == false) {
+				move(3 , Delta);
+			}
+			if(handle.Left() && this.collideLEFT == false) {
+				move(1 , Delta);
+			}
+			if(handle.Right() && this.collideRIGHT == false) {
+				move(2 , Delta);
+			}
+			elapsedTime = 0;
 		}
-		if(handle.Down()) {
-			move(3);
-		}
-		if(handle.Left()) {
-			move(1);
-		}
-		if(handle.Right()) {
-			move(2);
-		}
+		elapsedTime += Delta;
 		if(currentLengthU >= blockLength) { currentLengthU = 0 ; return 0;}
 		if(currentLengthL >= blockLength) { currentLengthL = 0 ; return 1;}
 		if(currentLengthR >= blockLength) { currentLengthR = 0 ; return 2;}
@@ -99,5 +79,5 @@ public abstract class Mob {
 
 	}
 	
-	public abstract byte Collision();
+	public abstract void Collision();
 }
