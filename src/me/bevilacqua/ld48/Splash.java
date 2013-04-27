@@ -7,7 +7,6 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.tiled.TiledMap;
 
 public class Splash extends BasicGameState {
 	
@@ -25,7 +24,7 @@ public class Splash extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setColor(Color.yellow);
 		splashImage.draw(400 - 32 * 3, 300 - 32 * 5, 5);
-		g.drawString("Enter Title", 325, 300);
+		g.drawString("JEB_001", 350, 300);
 	}
 
 	@Override
