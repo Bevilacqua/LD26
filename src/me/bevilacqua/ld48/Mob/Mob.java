@@ -64,7 +64,7 @@ public abstract class Mob {
 			}
 		}
 		
-		if(y < Game.HEIGHT - 32) { //TODO: Fix this height restraint aswell
+		if(y < Game.HEIGHT - 32) { //TODO: Fix this height restraint as well
 			if(Direction == 3) { 
 				y += pace;
 				currentLengthD += pace;
@@ -90,7 +90,6 @@ public abstract class Mob {
 		if(handle.Right()) {
 			move(2);
 		}
-//		System.out.println(currentLengthD);
 		if(currentLengthU >= blockLength) { currentLengthU = 0 ; return 0;}
 		if(currentLengthL >= blockLength) { currentLengthL = 0 ; return 1;}
 		if(currentLengthR >= blockLength) { currentLengthR = 0 ; return 2;}
@@ -100,5 +99,5 @@ public abstract class Mob {
 
 	}
 	
-	public abstract boolean Collision();
+	public abstract byte Collision();
 }

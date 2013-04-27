@@ -12,7 +12,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Play extends BasicGameState {
 
 	private Level level;
-	private float x , y;
+	private static float x , y;
 	private InputHandler handler;
 	private Player player;
 	
@@ -36,8 +36,9 @@ public class Play extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int Delta) throws SlickException {	
 		handler.update(); //That was terrifying DO NOT FORGET THIS!!!
 		playerMovementID = player.update();
+		player.Collision();
 		
-		if(playerMovementID != -1) System.out.println(playerMovementID);
+		if(playerMovementID != -1) 
 		if(playerMovementID == 0) {
 			if( y > 0) {
 				y -= 1;
@@ -61,7 +62,7 @@ public class Play extends BasicGameState {
 				x += 1;
 			}
 		}
-		if(handler.Action()) {
+		if(handler.Reset()) {
 			x = 0;
 			y= 0;
 			player.resetXY();
@@ -70,6 +71,14 @@ public class Play extends BasicGameState {
 		
 	}
 
+	public static int getX() {
+		return (int) x;
+	}
+	
+	public static int getY() {
+		return (int) y;
+	}
+	
 	@Override
 	public int getID() {
 		return 2;
