@@ -37,6 +37,7 @@ public class Play extends BasicGameState {
 		handler.update(); //That was terrifying DO NOT FORGET THIS!!!
 		playerMovementID = player.update();
 		
+		if(playerMovementID != -1) System.out.println(playerMovementID);
 		if(playerMovementID == 0) {
 			if( y > 0) {
 				y -= 1;
@@ -50,7 +51,7 @@ public class Play extends BasicGameState {
 		}
 		
 		if(playerMovementID == 3) {
-			if(y < level.getHeight() - 19) {
+			if(y < level.getHeight() - 19) { //TODO: fix height limits
 				y += 1;
 			}
 		}

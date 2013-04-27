@@ -7,7 +7,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class Game extends StateBasedGame  {
 
-	public static final String NAME = "LD48:?";
+	public static final String NAME = "LD48| JEB_001";
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
 	
