@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="Tiles" tilewidth="32" tileheight="32">
+  <image source="Tiles.png" trans="ff00ff" width="128" height="32"/>
+  <tile id="0">
+   <properties>
+    <property name="Collision" value="false"/>
+    <property name="Name" value="Background"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="Collision" value="true"/>
+    <property name="Name" value="floor"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="Collision" value="true"/>
+    <property name="Name" value="UnderPadding"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="Collison" value="true"/>
+    <property name="Name" value="hazard"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Tile Layer 1" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztz8ERgCAMAEHQ/nu2AhRmDCbjPvZ/11trHV52LPq6d+Rc4MOHj3oPsx/ZH2Y+Kjw8fVR5uPuo9DD6qPbgI5/RR4TdHxF8+PDxj49Iuz4AAAAAALK4ACWzFqQ=
+  </data>
+ </layer>
+</map>
