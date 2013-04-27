@@ -7,7 +7,7 @@ public class InputHandler {
 
 	private GameContainer gc;
 	private Input input;
-	private boolean Left , Right , Up , Down , Jump , Action;
+	private boolean Left , Right , Up , Down , Jump , Action , Reset;
 	
 	public InputHandler(GameContainer gc) {
 		this.gc = gc;
@@ -28,6 +28,7 @@ public class InputHandler {
 		if(input.isKeyDown(Input.KEY_A) ||input.isKeyDown(Input.KEY_LEFT))  Left = true;
 		if(input.isKeyDown(Input.KEY_D) ||input.isKeyDown(Input.KEY_RIGHT))  Right = true;
 		if(input.isKeyDown(Input.KEY_S) ||input.isKeyDown(Input.KEY_DOWN))  Down = true;
+		if(input.isKeyDown(Input.KEY_0)) Reset = true;
 		if(input.isKeyDown(Input.KEY_SPACE)) Jump = true;
 		if(input.isKeyDown(Input.KEY_ENTER)) Action = true;
 	}
@@ -49,5 +50,9 @@ public class InputHandler {
 	}
 	public boolean Action() {
 		return Action;		
+	}
+
+	public boolean Reset() {
+		return Reset;
 	}
 }
