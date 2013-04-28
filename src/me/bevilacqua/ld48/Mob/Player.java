@@ -4,16 +4,22 @@ import me.bevilacqua.ld48.Game;
 import me.bevilacqua.ld48.InputHandler;
 import me.bevilacqua.ld48.Level.Level;
 
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
+
 public class Player extends Mob{
 
-	private int score;
+	private int screwdrivers;
+	private Sound coin , coin1;
 	
-	public Player(String imagePath , InputHandler handle , Level level) {
+	public Player(String imagePath , InputHandler handle , Level level) throws SlickException {
 		super(imagePath , handle , level);
+		coin = new Sound("/sfx/coin.wav");
+		coin1 = new Sound("/sfx/coin1.wav");
 	}
 	
 	public int getScore() {
-		return score;
+		return screwdrivers;
 	}
 
 	public void move(int Direction , int Delta) {
@@ -50,14 +56,21 @@ public class Player extends Mob{
 	@Override
 	public void Collision() { 
 		collideUP = collideDOWN = collideLEFT = collideRIGHT = false;
-		try {
-			if((this.getX() / 16) -1 > 0) {leftID = (byte) level.map.getTileId((this.getX() /16) -1, this.getY() / 16 , 0);}
-			else leftID = -2;
-			if(this.getY() / 16 -1 > 0) {	upID = (byte) level.map.getTileId(this.getX() / 16  , (this.getY()/16) - 1 , 0);}
-			else upID = -2;
-			
-			downID = (byte) level.map.getTileId((this.getX() / 16)  , (this.getY() / 16) + 1 , 0);
-			rightID = (byte) level.map.getTileId((this.getX() /16) + 1 , (this.getY() / 16) , 0);
+		float xt = 0 , yt = 0;
+		
+		try{
+			for(int c = 0 ; c < 4 ; c++) {
+				xt = ((this.getX() -1) / 16);
+				yt = ((this.getY() -1) / 16);
+				
+				if((this.getX() / 16) -1 > 0) {leftID = (byte) level.map.getTileId((int)Math.round(xt) -1, (int)Math.round(yt) , 0);}
+				else leftID = -2;
+				if(this.getY() / 16 -1 > 0) {	upID = (byte) level.map.getTileId((int) Math.round(xt)  , (int) Math.round(yt) - 1 , 0);}
+				else upID = -2;
+				
+				downID = (byte) level.map.getTileId((int) Math.round(xt)  , (int) Math.round(yt) + 1 , 0);
+				rightID = (byte) level.map.getTileId((int) Math.round(xt) + 1 , (int) Math.round(yt) , 0);
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -76,6 +89,18 @@ public class Player extends Mob{
 		
 		if(rightID == 2 || rightID == 3) {
 			collideRIGHT = true;
+		}
+		
+		double r =0;
+		
+		if(level.map.getTileId((int)Math.round(xt) , (int)Math.round(yt) , 0) == 5) {
+			screwdrivers++;
+			level.map.setTileId((int)Math.round(xt), (int)Math.round(yt), 0, 1);
+			r = Math.random();
+			System.out.println(r);
+			if(r >= 0.5d) {
+				coin.play();
+			} else coin1.play();
 		}
 
 		
