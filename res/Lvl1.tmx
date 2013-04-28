@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="Tiles" tilewidth="32" tileheight="32">
-  <image source="Tiles.png" trans="ff00ff" width="160" height="32"/>
+  <image source="Tiles.png" trans="ff00ff" width="192" height="32"/>
   <tile id="0">
    <properties>
     <property name="Collision" value="false"/>
@@ -29,7 +29,7 @@
  </tileset>
  <layer name="Tile Layer 1" width="50" height="50">
   <data encoding="base64" compression="zlib">
-   eJzt1DsOgCAURFHQuP8tW1qBYOTzklOcfm4zOaWU4WdHp9V7S84OOnToiNfQ2rF7Q0tHhIa3jigNtY5IDaWOaA06HtcGDbWOEWZ3jKBDh46+jtLXffnAmR0jzeoAAAAAANjFDUMiFrA=
+   eJzt1DEOgCAQRUHQ6P2PbGm1KIkgm0wxza/2NVtLKRU+tnX6+97I3kGHDh35Gt52rN7wpiNDw1NHloZWR6aGqCNbg47bsUBDq2OE2R0j6NCho68j+nXRfi7SMdKsDgAAAACAVVyxDha1
   </data>
  </layer>
 </map>

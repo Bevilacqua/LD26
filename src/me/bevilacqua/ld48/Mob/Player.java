@@ -2,6 +2,7 @@ package me.bevilacqua.ld48.Mob;
 
 import me.bevilacqua.ld48.Game;
 import me.bevilacqua.ld48.InputHandler;
+import me.bevilacqua.ld48.Play;
 import me.bevilacqua.ld48.Level.Level;
 
 import org.newdawn.slick.SlickException;
@@ -10,12 +11,14 @@ import org.newdawn.slick.Sound;
 public class Player extends Mob{
 
 	private int screwdrivers;
-	private Sound coin , coin1;
+	private Sound coin , coin1 , death , death1;
 	
 	public Player(String imagePath , InputHandler handle , Level level) throws SlickException {
 		super(imagePath , handle , level);
 		coin = new Sound("/sfx/coin.wav");
 		coin1 = new Sound("/sfx/coin1.wav");
+		death = new Sound("/sfx/death.wav");
+		death1 = new Sound("/sfx/death1.wav");
 	}
 	
 	public int getScore() {
@@ -92,6 +95,26 @@ public class Player extends Mob{
 		}
 		
 		double r =0;
+		
+		if(level.map.getTileId((int) Math.round(xt), Math.round(yt), 0) == 4) {
+			this.resetXY();
+			Play.resetXY();
+			r = Math.random();
+			if(r > 0.5d) {
+				death.play();
+			} else death1.play();
+		}
+		
+		if(level.map.getTileId((int) Math.round(xt), Math.round(yt), 0) == 6 && this.handle.Action()) {
+			if(screwdrivers >= 3) {
+				Play.switchLevel();
+				resetXY();
+				System.out.println("confirm");
+			} else {
+				//TODO: print message explaining need for more srewdrivers
+			}
+		}
+
 		
 		if(level.map.getTileId((int)Math.round(xt) , (int)Math.round(yt) , 0) == 5) {
 			screwdrivers++;
