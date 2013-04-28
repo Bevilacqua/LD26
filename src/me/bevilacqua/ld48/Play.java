@@ -7,32 +7,38 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Play extends BasicGameState {
 
-	private Level level1 , level2 , level3;
+	private Level level1 , level2 , level3 , level4 , level5;
 	private Image p1 , p2 , p3 , p4;
+	private static Sound levelSwitch;
 	private Image[] images = new Image[4];
 	private static float x , y;
 	private InputHandler handler;
 	private Player player;
-	private static Level[] levels = new Level[3]; //TODO:adjust number of levels acourdingly
+	private static Level[] levels = new Level[5]; //TODO:adjust number of levels acourdingly
 	private static byte currentLevel = 0;
 	private static boolean switchin = false;
 	private static boolean endGame;
 	
-	private byte playerMovementID = -1;
+	private byte playerMovementID = 0;
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		level1 = new Level("/res/Lvl1.tmx" , "Level1"); //Probably not lvl1 ... nevermind it is :)
-		level2 = new Level("/res/Lvl2.tmx" , "Level2");
-		level3 = new Level("/res/Lvl3.tmx" , "Level3");
+		level1 = new Level("/res/Lvl1.tmx" , "Level1" , "/music/Levels/5.wav"); //Probably not lvl1 ... nevermind it is :)
+		level2 = new Level("/res/Lvl2.tmx" , "Level2" , "/music/Levels/5.wav");
+		level3 = new Level("/res/Lvl3.tmx" , "Level3" , "/music/Levels/5.wav");
+		level4 = new Level("/res/Lvl4.tmx" , "Level4" , "/music/Levels/5.wav");
+		level5 = new Level("/res/Lvl5.tmx" , "Level5" , "/music/Levels/5.wav");
 		levels[0] = level1;
 		levels[1] = level2;
 		levels[2] = level3;
+		levels[3] = level4;
+		levels[4] = level5;
 		
 		p1 = new Image("/res/Mob/playerUp.png");
 		p2 = new Image("/res/Mob/playerLeft.png");
@@ -42,6 +48,8 @@ public class Play extends BasicGameState {
 		images[1] = p2;
 		images[2] = p3;
 		images[3] = p4;
+		
+		levelSwitch = new Sound("/sfx/levelSwitch.wav");
 		
 		handler = new InputHandler(gc);
 	
@@ -63,7 +71,7 @@ public class Play extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int Delta) throws SlickException {	
 		handler.update(); //That was terrifying DO NOT FORGET THIS!!!
 		playerMovementID = player.update(Delta);
-		
+
 		if(switchin) {
 			player = new Player(images , handler , levels[currentLevel]);
 			switchin = false;
@@ -104,7 +112,7 @@ public class Play extends BasicGameState {
 			y= 0;
 			player.resetXY();
 		}
-
+		
 		
 	}
 
@@ -117,6 +125,7 @@ public class Play extends BasicGameState {
 	}
 	
 	public static void switchLevel() {
+		levels[currentLevel].endMusic();
 		currentLevel++;
 		if(currentLevel > levels.length - 1) {
 			endGame = true;
@@ -124,6 +133,7 @@ public class Play extends BasicGameState {
 		} else {
 			System.out.println("Switching to: " + levels[currentLevel].getName());
 			resetXY();
+			levelSwitch.play();
 			switchin = true;
 		}
 	}

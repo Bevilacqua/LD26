@@ -112,13 +112,15 @@ public class Player extends Mob{
 			} else death1.play();
 		}
 		
-		if(level.map.getTileId((int) Math.round(xt), Math.round(yt), 0) == 6 && this.handle.Action()) {
-			if(screwdrivers >= 3) {
-				Play.switchLevel();
-				resetXY();
-				System.out.println("confirm");
-			} else {
-				//TODO: print message explaining need for more srewdrivers
+		if(yt > 0 && xt > 0) {
+			if( ( (level.map.getTileId((int) Math.round(xt), Math.round(yt), 0) == 6 ) || (level.map.getTileId((int) Math.round(xt) -1, Math.round(yt), 0) == 6 ) || (level.map.getTileId((int) Math.round(xt), Math.round(yt) -1 , 0) == 6 ) || (level.map.getTileId((int) Math.round(xt), Math.round(yt) + 1, 0) == 6 ) || (level.map.getTileId((int) Math.round(xt) + 1, Math.round(yt), 0) == 6 ) )&& this.handle.Action()) {
+				if(screwdrivers >= 3) {
+					Play.switchLevel();
+					resetXY();
+					System.out.println("confirm");
+				} else {
+					//TODO: print message explaining need for more screwdrivers
+				}
 			}
 		}
 
@@ -132,18 +134,32 @@ public class Player extends Mob{
 				coin.play();
 			} else coin1.play();
 		}
+		
+		if(yt > 0) {
+			if(level.map.getTileId((int) Math.round(xt) , (int)Math.round(yt) - 1 , 0) == 5) {
+				screwdrivers++;
+				level.map.setTileId((int)Math.round(xt), (int)Math.round(yt) - 1, 0, 1);
+				r = Math.random();
+				System.out.println(r);
+				if(r >= 0.5d) {
+					coin.play();
+				} else coin1.play();
+			}
+		}
 
 		
 	
 	}
 	
 	public byte update(int Delta) {
+		byte r = super.update(Delta);
+		
 		try {
-		Collision();
-		} catch(NullPointerException e) {
-			e.printStackTrace();
-		}
-		return super.update(Delta);
+			Collision();
+			} catch(NullPointerException e) {
+				e.printStackTrace();
+			}
+		return r;
 	}
 	
 	public int getX() {

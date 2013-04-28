@@ -5,6 +5,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -19,15 +20,19 @@ public class Menu extends BasicGameState {
 	
 	private Image decom;
 	private Image howTo;
+	private Music menu;
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		decom = new Image("/res/Decomission.png");
 		howTo = new Image("/res/HowTo.png");
+		menu = new Music("/music/menu.wav");
+//		menu.loop();
 	}
 
 	@Override
-	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {		
+	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {			
 		if(!startUp) {
+			if(menu.playing() == false) menu.loop();
 			g.setColor(Color.green);
 			g.drawRoundRect(200, 200, 400, 100, 10);
 			g.drawRoundRect(200 , 310 , 400 , 100 , 10 );
@@ -35,6 +40,7 @@ public class Menu extends BasicGameState {
 			g.drawString("Start!", 350 , 250);
 			g.drawString("QUIT :(", 350 , 350);
 		} else {
+			menu.stop();
 			if(pictureID == 0) {
 				decom.draw();
 			}
