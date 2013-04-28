@@ -4,56 +4,49 @@ import me.bevilacqua.ld48.InputHandler;
 import me.bevilacqua.ld48.Level.Level;
 
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 
 public abstract class Mob {
 
 	protected float x , y;
-	protected Image image;
+	protected Image[] images = new Image[4];
 	protected String imagePath;
 	protected float pace = 1;
 	protected InputHandler handle;
 	protected Level level;
 	protected int elapsedTime;
 	protected final int DELAY = 5;
+	protected byte dir; //AS always same directions
 	
 	protected byte upID , downID , leftID , rightID;
 	protected boolean collideUP = true, collideDOWN , collideLEFT , collideRIGHT;
 	
 	protected final byte blockLength = 32;
 	protected byte currentLengthL , currentLengthR , currentLengthU , currentLengthD;
+	private int currentImage = 0; //0 = up 1 = left 2 = right 3 = down
 	
-	public Mob(String imagePath , int pace , InputHandler handle , Level level) {
-		this.imagePath = imagePath;
+	public Mob(Image[] images , int pace , InputHandler handle , Level level) {
+		this.images = images;
 		this.pace = pace;
 		this.handle = handle;
 		this.level = level;
-		this.init();
 	}
 	
-	public Mob(String imagePath , InputHandler handle , Level level) {
-		this.imagePath = imagePath;
+	public Mob(Image[] images , InputHandler handle , Level level) {
+		this.images = images;
 		this.handle = handle;
 		this.level = level;
-		this.init();
-	}
-
-	protected void init() {
-		try {
-			image = new Image(imagePath);
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public abstract void move(int dir , int Delta);
 	
 	public void render() {
-		image.draw(Math.round(x), Math.round(y));
+		images[currentImage].draw(Math.round(x), Math.round(y));
 	}
 	
 	public byte update(int Delta) {
 				
+		currentImage = dir;
+		
 		if(elapsedTime > DELAY) {
 			if(handle.Up() && this.collideUP == false) {
 				move(0 , Delta);

@@ -5,6 +5,7 @@ import me.bevilacqua.ld48.InputHandler;
 import me.bevilacqua.ld48.Play;
 import me.bevilacqua.ld48.Level.Level;
 
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
@@ -13,8 +14,8 @@ public class Player extends Mob{
 	private int screwdrivers;
 	private Sound coin , coin1 , death , death1;
 	
-	public Player(String imagePath , InputHandler handle , Level level) throws SlickException {
-		super(imagePath , handle , level);
+	public Player(Image[] images , InputHandler handle , Level level) throws SlickException {
+		super(images , handle , level);
 		coin = new Sound("/sfx/coin.wav");
 		coin1 = new Sound("/sfx/coin1.wav");
 		death = new Sound("/sfx/death.wav");
@@ -26,15 +27,19 @@ public class Player extends Mob{
 	}
 
 	public void move(int Direction , int Delta) {
-		if(y > 0) { 
-			if(Direction == 0) {
-				y -= pace;
-				currentLengthU += pace;
+		
+		if(y < Game.HEIGHT - 32) { 
+			if(Direction == 3) { 
+				dir = 3;
+				y += pace;
+				currentLengthD += pace;
 			}
+			
 		}
 		
 		if(x > 0) {
-			if(Direction == 1) { 
+			if(Direction == 1) {
+				dir = 1;
 				x -= pace;
 				currentLengthL += pace;
 			}
@@ -42,18 +47,20 @@ public class Player extends Mob{
 		
 		if(x < Game.WIDTH - 32) {
 			if(Direction == 2) { 
+				dir = 2;
 				x += pace;
 				currentLengthR += pace;
 			}
 		}
 		
-		if(y < Game.HEIGHT - 32) { 
-			if(Direction == 3) { 
-				y += pace;
-				currentLengthD += pace;
-			}
 			
-		}		
+		if(y > 0) { 
+			if(Direction == 0) {
+				dir = 0;
+				y -= pace;
+				currentLengthU += pace;
+			}
+		}
 	}
 	
 	@Override
