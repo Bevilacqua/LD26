@@ -13,14 +13,14 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class Play extends BasicGameState {
 
-	private Level level1 , level2 , level3 , level4 , level5 , holdLevel;
+	private Level level1 , level2 , level3 , level4 , level5 , level6 , level7 , level8 , level9 ,  holdLevel;
 	private Image p1 , p2 , p3 , p4;
 	private static Sound levelSwitch;
 	private Image[] images = new Image[4];
 	private static float x , y;
 	private InputHandler handler;
 	private Player player;
-	private static Level[] levels = new Level[5]; //TODO:adjust number of levels acourdingly
+	private static Level[] levels = new Level[9]; //TODO:adjust number of levels acourdingly
 	private static byte currentLevel = 0;
 	private static boolean switchin = false;
 	private static boolean endGame;
@@ -34,16 +34,24 @@ public class Play extends BasicGameState {
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		level1 = new Level("/res/Lvl1.tmx" , "Level1" , "/music/Levels/5.wav" , 1000 * 30); //Probably not lvl1 ... nevermind it is :)
-		level2 = new Level("/res/Lvl2.tmx" , "Level2" , "/music/Levels/5.wav" , 1000 * 25);
-		level3 = new Level("/res/Lvl3.tmx" , "Level3" , "/music/Levels/5.wav" , 1000 * 30);
-		level4 = new Level("/res/Lvl4.tmx" , "Level4" , "/music/Levels/5.wav" , 1000 * 36);
-		level5 = new Level("/res/Lvl5.tmx" , "Level5" , "/music/Levels/5.wav" , 1000 * 50);
+		level1 = new Level("/res/Lvl1.tmx" , "Level1" , "/music/Levels/1.wav"  , 1000 * 30, "/res/Diary/Chp1.png"); //Probably not lvl1 ... nevermind it is :)
+		level2 = new Level("/res/Lvl2.tmx" , "Level2" , "/music/Levels/2.wav" , 1000 * 25, "/res/Diary/Chp2.png");
+		level3 = new Level("/res/Lvl3.tmx" , "Level3" , "/music/Levels/3.wav" , 1000 * 30, "/res/Diary/Chp3.png");
+		level4 = new Level("/res/Lvl4.tmx" , "Level4" , "/music/Levels/4.wav" , 1000 * 50, "/res/Diary/Chp4.png");
+		level5 = new Level("/res/Lvl5.tmx" , "Level5" , "/music/Levels/5.wav" , 1000 * 58, "/res/Diary/Chp5.png");
+		level6 = new Level("/res/Lvl6.tmx" , "Level6" , "/music/Levels/6.wav" , 1000 * 20, "/res/Diary/Chp6.png");
+		level7 = new Level("/res/Lvl7.tmx" , "Level7" , "/music/Levels/7.wav" , 1000 * 30, "/res/Diary/Chp7.png");
+		level8 = new Level("/res/Lvl8.tmx" , "Level8" , "/music/Levels/8.wav" , 1000 * 21, "/res/Diary/Chp8.png");
+		level9 = new Level("/res/Lvl9.tmx" , "Level9" , "/music/Levels/9.wav" , 1000 * 45, "/res/Diary/Chp9.png");
 		levels[0] = level1;
 		levels[1] = level2;
 		levels[2] = level3;
 		levels[3] = level4;
 		levels[4] = level5;
+		levels[5] = level6;
+		levels[6] = level7;
+		levels[7] = level8;
+		levels[8] = level9;
 		
 		p1 = new Image("/res/Mob/playerUp.png");
 		p2 = new Image("/res/Mob/playerLeft.png");
@@ -68,9 +76,11 @@ public class Play extends BasicGameState {
 		if(!endGame) {
 			levels[currentLevel].render(Math.round(x), Math.round(y), 0, 0, g);
 		}
-		player.render();
-		g.drawString("ScrewDrivers: " + player.getScore() + " / 3",300 , 40);
-		g.drawString(" " + levels[currentLevel].getName() , 300, 55);
+		if(!levels[currentLevel].preMode) {
+			player.render();
+			g.drawString("ScrewDrivers: " + player.getScore() + " / 3",300 , 40);
+//			g.drawString(" " + levels[currentLevel].getName() , 300, 55);
+		}
 		
 	}
 
@@ -160,7 +170,7 @@ public class Play extends BasicGameState {
 	
 	public void failLevel() throws SlickException {
 		levels[currentLevel].failLevel();
-		holdLevel = new Level(levels[currentLevel].getMapPath() , levels[currentLevel].getName() ,levels[currentLevel].getSoundPath() , levels[currentLevel].getTimer());
+		holdLevel = new Level(levels[currentLevel].getMapPath() , levels[currentLevel].getName() ,levels[currentLevel].getSoundPath() , levels[currentLevel].getTimer() , levels[currentLevel].getDiaryPath());
 		levels[currentLevel] = holdLevel;
 		System.out.println("resettingLevel");
 		resetXY();
