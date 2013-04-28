@@ -26,11 +26,15 @@ public class Play extends BasicGameState {
 	private static boolean endGame;
 	public static boolean lf = false;
 	
+	private static boolean flag = false;
+	private static int elapsedTime;
+	private int DELAY = 2000;
+	
 	private byte playerMovementID = 0;
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		level1 = new Level("/res/Lvl1.tmx" , "Level1" , "/music/Levels/5.wav" , 1000 * 10); //Probably not lvl1 ... nevermind it is :)
+		level1 = new Level("/res/Lvl1.tmx" , "Level1" , "/music/Levels/5.wav" , 1000 * 30); //Probably not lvl1 ... nevermind it is :)
 		level2 = new Level("/res/Lvl2.tmx" , "Level2" , "/music/Levels/5.wav" , 1000 * 25);
 		level3 = new Level("/res/Lvl3.tmx" , "Level3" , "/music/Levels/5.wav" , 1000 * 30);
 		level4 = new Level("/res/Lvl4.tmx" , "Level4" , "/music/Levels/5.wav" , 1000 * 36);
@@ -66,6 +70,8 @@ public class Play extends BasicGameState {
 		}
 		player.render();
 		g.drawString("ScrewDrivers: " + player.getScore() + " / 3",300 , 40);
+		g.drawString(" " + levels[currentLevel].getName() , 300, 55);
+		
 	}
 
 	@Override
@@ -74,8 +80,17 @@ public class Play extends BasicGameState {
 		playerMovementID = player.update(Delta);
 		levels[currentLevel].update(Delta);
 
+		if(elapsedTime > DELAY) {
+			flag = false;
+			elapsedTime = 0;
+		}
+		
+		elapsedTime += Delta;
+		
 		if(lf == true) {
 			failLevel();
+			player = new Player(images , handler , levels[currentLevel]);
+			lf = false;
 		}
 		
 		if(switchin) {
@@ -114,7 +129,8 @@ public class Play extends BasicGameState {
 			}
 		}
 		if(handler.Reset()) {
-			lf = true;
+			if(flag == false) lf = true;
+			flag = true;
 		}
 		
 		
@@ -148,9 +164,6 @@ public class Play extends BasicGameState {
 		levels[currentLevel] = holdLevel;
 		System.out.println("resettingLevel");
 		resetXY();
-		player.resetXY();
-		player.setScore(0);
-		lf = false;
 	}
 	
 	public static void resetXY() {

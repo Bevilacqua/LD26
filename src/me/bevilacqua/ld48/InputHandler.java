@@ -19,7 +19,7 @@ public class InputHandler {
 	}
 	
 	public void update() {
-		Left = Right = Up = Down = Jump = Action = false;
+		Left = Right = Up = Down = Jump = Action = Reset = false;
 		keyDown();
 	}
 	
@@ -31,7 +31,10 @@ public class InputHandler {
 		if(input.isKeyDown(Input.KEY_0)) Reset = true;
 		if(input.isKeyDown(Input.KEY_SPACE)) Jump = true;
 		if(input.isKeyDown(Input.KEY_ENTER)) Action = true;
+		
 	}
+	
+
 	
 	public boolean Left() {
 		return Left;		
