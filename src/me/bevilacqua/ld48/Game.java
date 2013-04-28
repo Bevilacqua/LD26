@@ -26,6 +26,7 @@ public class Game extends StateBasedGame  {
 		try {
 			AppGameContainer container = new AppGameContainer(new Game());
 			container.setDisplayMode(WIDTH, HEIGHT, false); //TODO: Maybe make this full screen later? IDK
+			container.setShowFPS(false);
 			container.start();
 		} catch (Exception e) {
 			e.printStackTrace();
