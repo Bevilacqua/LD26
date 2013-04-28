@@ -14,7 +14,7 @@ public abstract class Mob {
 	protected InputHandler handle;
 	protected Level level;
 	protected int elapsedTime;
-	protected final int DELAY = 5;
+	protected final int DELAY = 10;
 	protected byte dir; //AS always same directions
 	
 	protected byte upID , downID , leftID , rightID;
