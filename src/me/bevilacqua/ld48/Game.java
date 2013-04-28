@@ -15,6 +15,7 @@ public class Game extends StateBasedGame  {
 	public static byte splashId = 0;
 	public static byte menuId = 1;
 	public static byte playId = 2;
+	public static byte endgameId = 3;
 	
 	public Game() {
 		super(NAME);
@@ -37,6 +38,7 @@ public class Game extends StateBasedGame  {
 		addState(new Splash());
 		addState(new Menu());
 		addState(new Play());
+		addState(new EndGame());
 		enterState(splashId);
 	}
 

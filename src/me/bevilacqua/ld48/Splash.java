@@ -33,7 +33,7 @@ public class Splash extends BasicGameState {
 		elapsedTime += Delta;
 		
 		if(elapsedTime >= Delay) {
-			sbg.enterState(1);
+			sbg.enterState(Game.menuId);
 		}
 	}
 

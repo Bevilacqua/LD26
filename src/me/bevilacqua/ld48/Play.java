@@ -6,30 +6,41 @@ import me.bevilacqua.ld48.Mob.Player;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Play extends BasicGameState {
 
-	private Level level;
+	private Level level1 , level2 , level3;
 	private static float x , y;
 	private InputHandler handler;
 	private Player player;
+	private static Level[] levels = new Level[3]; //TODO:adjust number of levels acourdingly
+	private static byte currentLevel = 0;
+	private static boolean switchin = false;
+	private static boolean endGame;
 	
 	private byte playerMovementID = -1;
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		level = new Level("/res/Lvl1.tmx" , "Level1"); //Probably not lvl1 ...
+		level1 = new Level("/res/Lvl1.tmx" , "Level1"); //Probably not lvl1 ... nevermind it is :)
+		level2 = new Level("/res/Lvl2.tmx" , "Level2");
+		level3 = new Level("/res/Lvl3.tmx" , "Level3");
 		handler = new InputHandler(gc);
-		player = new Player("/res/Mob/player.png" , handler , level);
-		Sound pickup1 = new Sound("/sfx/coin.wav");
+		levels[0] = level1;
+		levels[1] = level2;
+		levels[2] = level3;
+		player = new Player("/res/Mob/player.png" , handler , levels[currentLevel]);
+		System.out.println( levels.length + " Levels");
+
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		level.render(Math.round(x), Math.round(y), 0, 0);
+		if(!endGame) {
+			levels[currentLevel].render(Math.round(x), Math.round(y), 0, 0);
+		}
 		player.render();
 		g.drawString("ScrewDrivers: " + player.getScore(),300 , 40);
 	}
@@ -38,6 +49,17 @@ public class Play extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int Delta) throws SlickException {	
 		handler.update(); //That was terrifying DO NOT FORGET THIS!!!
 		playerMovementID = player.update(Delta);
+		
+		if(switchin) {
+			player = new Player("/res/Mob/player.png" , handler , levels[currentLevel]);
+			switchin = false;
+		}
+		
+		if(endGame) {
+			System.out.println("DoubleConfirm");
+			sbg.enterState(Game.endgameId);
+			endGame = false;
+		}
 		
 		if(playerMovementID != -1) 
 		if(playerMovementID == 0) {
@@ -53,13 +75,13 @@ public class Play extends BasicGameState {
 		}
 		
 		if(playerMovementID == 3) {
-			if(y < level.getHeight() - 19 ) { //TODO: fix height limits
+			if(y < levels[currentLevel].getHeight()) { 
 				y += 1;
 			}
 		}
 		
 		if(playerMovementID == 2) {
-			if(x < level.getWidth() - 25 ) {
+			if(x < levels[currentLevel].getWidth()) {
 				x += 1;
 			}
 		}
@@ -78,6 +100,23 @@ public class Play extends BasicGameState {
 	
 	public static int getY() {
 		return (int) y;
+	}
+	
+	public static void switchLevel() {
+		currentLevel++;
+		if(currentLevel > levels.length - 1) {
+			endGame = true;
+			System.out.println("Going to endGame");
+		} else {
+			System.out.println("Switching to: " + levels[currentLevel].getName());
+			resetXY();
+			switchin = true;
+		}
+	}
+	
+	public static void resetXY() {
+		Play.x =0;
+		Play.y =0;
 	}
 	
 	@Override
