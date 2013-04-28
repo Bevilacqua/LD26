@@ -21,12 +21,13 @@ public class Menu extends BasicGameState {
 	private Image decom;
 	private Image howTo;
 	private Music menu;
+	private Music decoMusic;
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		decom = new Image("/res/Decomission.png");
 		howTo = new Image("/res/HowTo.png");
 		menu = new Music("/music/menu.wav");
-//		menu.loop();
+		decoMusic = new Music("/music/decommision.wav");
 	}
 
 	@Override
@@ -42,9 +43,11 @@ public class Menu extends BasicGameState {
 		} else {
 			menu.stop();
 			if(pictureID == 0) {
+				if(!decoMusic.playing()) decoMusic.loop();
 				decom.draw();
 			}
 			if(pictureID ==1) {
+				if(decoMusic.playing()) decoMusic.stop();
 				howTo.draw();
 			}
 		}
