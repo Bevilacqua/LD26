@@ -3,6 +3,7 @@ package me.bevilacqua.ld48.Level;
 import me.bevilacqua.ld48.Play;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
@@ -23,26 +24,38 @@ public class Level {
 	
 	public TiledMap map; //I know i shouldn't do this sorry Java gods have mercy
 	
-	public Level(String mapPath , String Name , String musicPath , int timer ) throws SlickException {
+	public boolean preMode = true; //I know i shouldn't do this sorry Java gods have mercy
+	private Image diary;
+	private String diaryPath;
+	private int diaryDELAY = 6000;
+	private int diaryElapsedTime;
+	
+	public Level(String mapPath , String Name , String musicPath , int timer  , String diaryPath) throws SlickException {
 		this.mapPath = mapPath;
 		this.Name = Name;
 		this.musicPath = musicPath;
 		this.timer = timer;
+		this.diaryPath = diaryPath;
 		this.init();
 	}
 
 	private void init() throws SlickException {
 		map = new TiledMap(mapPath);
 		music = new Music(musicPath);
+		diary = new Image(diaryPath);
 		height = map.getHeight();
 		width = map.getWidth();
 		System.out.println("Loading map Name: " + Name + " Width: " + width + " Height: " + height);
 	}
 	
 	public void render(int x , int y , int startX , int startY , Graphics g) {
-		if(music.playing() == false) music.loop();
-		map.render(0, 0 , startX + x , startY + y , 100 , 100);
-		g.drawString(" " + (float)((timer - elapsedTime) / 1000), 350 , 25);
+		if(preMode) {
+			diary.draw();
+		} else {
+			if(music.playing() == false) music.loop();
+			map.render(0, 0 , startX + x , startY + y , 100 , 100);
+			g.drawString(" " + (float)((timer - elapsedTime) / 1000), 350 , 25);
+		}
 	}
 	
 	public void failLevel() {
@@ -50,10 +63,17 @@ public class Level {
 	}
 	
 	public void update(int Delta) {
-		if(elapsedTime > timer) {
-			Play.lf = true;
+		if(preMode) {
+			if(diaryElapsedTime > diaryDELAY) {
+				preMode = false;
+				diaryElapsedTime = 0;
+			} else diaryElapsedTime += Delta;
+		} else {
+			if(elapsedTime > timer) {
+				Play.lf = true;
+			}
+			elapsedTime += Delta;
 		}
-		elapsedTime += Delta;
 	}
 	
 	public String getName() {
@@ -85,5 +105,9 @@ public class Level {
 
 	public void setElapsedTime(int i) {
 		this.elapsedTime = i;
+	}
+
+	public String getDiaryPath() {
+		return this.diaryPath;
 	}
 }
