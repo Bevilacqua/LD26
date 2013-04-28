@@ -196,4 +196,8 @@ public class Player extends Mob{
 		return collideRIGHT;
 	}
 
+	public void setScore(int i) {
+		this.screwdrivers = i;
+	}
+
 }

@@ -13,7 +13,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class Play extends BasicGameState {
 
-	private Level level1 , level2 , level3 , level4 , level5;
+	private Level level1 , level2 , level3 , level4 , level5 , holdLevel;
 	private Image p1 , p2 , p3 , p4;
 	private static Sound levelSwitch;
 	private Image[] images = new Image[4];
@@ -24,16 +24,17 @@ public class Play extends BasicGameState {
 	private static byte currentLevel = 0;
 	private static boolean switchin = false;
 	private static boolean endGame;
+	public static boolean lf = false;
 	
 	private byte playerMovementID = 0;
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		level1 = new Level("/res/Lvl1.tmx" , "Level1" , "/music/Levels/5.wav"); //Probably not lvl1 ... nevermind it is :)
-		level2 = new Level("/res/Lvl2.tmx" , "Level2" , "/music/Levels/5.wav");
-		level3 = new Level("/res/Lvl3.tmx" , "Level3" , "/music/Levels/5.wav");
-		level4 = new Level("/res/Lvl4.tmx" , "Level4" , "/music/Levels/5.wav");
-		level5 = new Level("/res/Lvl5.tmx" , "Level5" , "/music/Levels/5.wav");
+		level1 = new Level("/res/Lvl1.tmx" , "Level1" , "/music/Levels/5.wav" , 1000 * 10); //Probably not lvl1 ... nevermind it is :)
+		level2 = new Level("/res/Lvl2.tmx" , "Level2" , "/music/Levels/5.wav" , 1000 * 25);
+		level3 = new Level("/res/Lvl3.tmx" , "Level3" , "/music/Levels/5.wav" , 1000 * 30);
+		level4 = new Level("/res/Lvl4.tmx" , "Level4" , "/music/Levels/5.wav" , 1000 * 36);
+		level5 = new Level("/res/Lvl5.tmx" , "Level5" , "/music/Levels/5.wav" , 1000 * 50);
 		levels[0] = level1;
 		levels[1] = level2;
 		levels[2] = level3;
@@ -61,7 +62,7 @@ public class Play extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		if(!endGame) {
-			levels[currentLevel].render(Math.round(x), Math.round(y), 0, 0);
+			levels[currentLevel].render(Math.round(x), Math.round(y), 0, 0, g);
 		}
 		player.render();
 		g.drawString("ScrewDrivers: " + player.getScore() + " / 3",300 , 40);
@@ -71,7 +72,12 @@ public class Play extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int Delta) throws SlickException {	
 		handler.update(); //That was terrifying DO NOT FORGET THIS!!!
 		playerMovementID = player.update(Delta);
+		levels[currentLevel].update(Delta);
 
+		if(lf == true) {
+			failLevel();
+		}
+		
 		if(switchin) {
 			player = new Player(images , handler , levels[currentLevel]);
 			switchin = false;
@@ -108,9 +114,7 @@ public class Play extends BasicGameState {
 			}
 		}
 		if(handler.Reset()) {
-			x = 0;
-			y= 0;
-			player.resetXY();
+			lf = true;
 		}
 		
 		
@@ -136,6 +140,17 @@ public class Play extends BasicGameState {
 			levelSwitch.play();
 			switchin = true;
 		}
+	}
+	
+	public void failLevel() throws SlickException {
+		levels[currentLevel].failLevel();
+		holdLevel = new Level(levels[currentLevel].getMapPath() , levels[currentLevel].getName() ,levels[currentLevel].getSoundPath() , levels[currentLevel].getTimer());
+		levels[currentLevel] = holdLevel;
+		System.out.println("resettingLevel");
+		resetXY();
+		player.resetXY();
+		player.setScore(0);
+		lf = false;
 	}
 	
 	public static void resetXY() {
