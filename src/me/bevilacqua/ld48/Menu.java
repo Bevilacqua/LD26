@@ -80,6 +80,7 @@ public class Menu extends BasicGameState {
 			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				if(input.getMouseX() > 200 && input.getMouseX() < 600) {
 					if(input.getMouseY() > 310 && input.getMouseY() < 410) {
+						gc.exit();
 						System.exit(0);
 						System.out.println(".");
 					}
