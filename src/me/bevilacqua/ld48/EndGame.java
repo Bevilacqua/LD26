@@ -12,22 +12,21 @@ public class EndGame extends BasicGameState {
 	private Image image;
 	InputHandler handle;
 	@Override
-	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException {
+	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
 		image = new Image("/res/Diary/Epilogue.png");
+		handle = Play.getHandler();
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame arg1, Graphics arg2) throws SlickException {
 		image.draw();
-		handle = new InputHandler(gc);
 	}
 
 	@Override
-	public void update(GameContainer gc, StateBasedGame sbg, int arg2) throws SlickException {
+	public void update(GameContainer gc, StateBasedGame sbg, int Delta) throws SlickException {
 		
-		System.out.println("test");
-		
-		if(handle.Jump()) {
+		if(handle.Up() == true) {
+			System.out.println("test");
 			gc.exit();
 			System.exit(0);
 		}
