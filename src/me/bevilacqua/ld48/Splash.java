@@ -28,7 +28,7 @@ public class Splash extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setColor(Color.yellow);
 		splashImage.draw(400 - 32 * 3, 300 - 32 * 5, 5);
-		g.drawString("JEB_001", 350, 300);
+		g.drawString("            JEB_001\n\nCreated By: Jacob Bevilacqua \nFor LD48 #26", 250, 300);
 	}
 
 	@Override
