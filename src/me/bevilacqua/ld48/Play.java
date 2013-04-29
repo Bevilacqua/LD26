@@ -18,10 +18,10 @@ public class Play extends BasicGameState {
 	private static Sound levelSwitch;
 	private Image[] images = new Image[4];
 	private static float x , y;
-	private InputHandler handler;
+	private static InputHandler handler;
 	private Player player;
 	private static Level[] levels = new Level[10]; //TODO:adjust number of levels acourdingly
-	private static byte currentLevel = 9;
+	private static byte currentLevel;
 	private static boolean switchin = false;
 	private static boolean endGame;
 	public static boolean lf = false;
@@ -32,6 +32,10 @@ public class Play extends BasicGameState {
 	
 	private byte playerMovementID = 0;
 
+	public static InputHandler getHandler() {
+		return handler;
+	}
+	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		level1 = new Level("/res/Lvl1.tmx" , "Level1" , "/music/Levels/1.wav"  , 1000 * 30, "/res/Diary/Chp1.png"); //Probably not lvl1 ... nevermind it is :)
