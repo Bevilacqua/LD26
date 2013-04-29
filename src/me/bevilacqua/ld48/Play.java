@@ -13,15 +13,15 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class Play extends BasicGameState {
 
-	private Level level1 , level2 , level3 , level4 , level5 , level6 , level7 , level8 , level9 ,  holdLevel;
+	private Level level1 , level2 , level3 , level4 , level5 , level6 , level7 , level8 , level9 , finalLevel ,  holdLevel;
 	private Image p1 , p2 , p3 , p4;
 	private static Sound levelSwitch;
 	private Image[] images = new Image[4];
 	private static float x , y;
 	private InputHandler handler;
 	private Player player;
-	private static Level[] levels = new Level[9]; //TODO:adjust number of levels acourdingly
-	private static byte currentLevel = 0;
+	private static Level[] levels = new Level[10]; //TODO:adjust number of levels acourdingly
+	private static byte currentLevel = 9;
 	private static boolean switchin = false;
 	private static boolean endGame;
 	public static boolean lf = false;
@@ -42,7 +42,8 @@ public class Play extends BasicGameState {
 		level6 = new Level("/res/Lvl6.tmx" , "Level6" , "/music/Levels/6.wav" , 1000 * 20, "/res/Diary/Chp6.png");
 		level7 = new Level("/res/Lvl7.tmx" , "Level7" , "/music/Levels/7.wav" , 1000 * 30, "/res/Diary/Chp7.png");
 		level8 = new Level("/res/Lvl8.tmx" , "Level8" , "/music/Levels/8.wav" , 1000 * 21, "/res/Diary/Chp8.png");
-		level9 = new Level("/res/Lvl9.tmx" , "Level9" , "/music/Levels/9.wav" , 1000 * 45, "/res/Diary/Chp9.png");
+		level9 = new Level("/res/Lvl9.tmx" , "Level9" , "/music/Levels/9.wav" , 1000 * 33, "/res/Diary/Chp9.png");
+		finalLevel = new Level("/res/Final.tmx" , "Final" , "/music/Levels/final.wav" , 1000 * 33, "/res/Diary/Chp10.png");
 		levels[0] = level1;
 		levels[1] = level2;
 		levels[2] = level3;
@@ -52,6 +53,7 @@ public class Play extends BasicGameState {
 		levels[6] = level7;
 		levels[7] = level8;
 		levels[8] = level9;
+		levels[9] = finalLevel;
 		
 		p1 = new Image("/res/Mob/playerUp.png");
 		p2 = new Image("/res/Mob/playerLeft.png");
@@ -75,11 +77,10 @@ public class Play extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		if(!endGame) {
 			levels[currentLevel].render(Math.round(x), Math.round(y), 0, 0, g);
-		}
-		if(!levels[currentLevel].preMode) {
-			player.render();
-			g.drawString("ScrewDrivers: " + player.getScore() + " / 3",300 , 40);
-//			g.drawString(" " + levels[currentLevel].getName() , 300, 55);
+			if(!levels[currentLevel].preMode) {
+				player.render();
+				g.drawString("ScrewDrivers: " + player.getScore() + " / 3",300 , 40);
+			}
 		}
 		
 	}
@@ -88,8 +89,10 @@ public class Play extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int Delta) throws SlickException {	
 		handler.update(); //That was terrifying DO NOT FORGET THIS!!!
 		playerMovementID = player.update(Delta);
-		levels[currentLevel].update(Delta);
-
+		if(!endGame) {
+			levels[currentLevel].update(Delta);
+		}
+		
 		if(elapsedTime > DELAY) {
 			flag = false;
 			elapsedTime = 0;
@@ -110,8 +113,7 @@ public class Play extends BasicGameState {
 		
 		if(endGame) {
 			System.out.println("DoubleConfirm");
-			sbg.enterState(Game.endgameId);
-			endGame = false;
+			sbg.enterState(3);
 		}
 		
 		if(playerMovementID != -1) 
@@ -157,7 +159,7 @@ public class Play extends BasicGameState {
 	public static void switchLevel() {
 		levels[currentLevel].endMusic();
 		currentLevel++;
-		if(currentLevel > levels.length - 1) {
+		if(currentLevel  > 9) {
 			endGame = true;
 			System.out.println("Going to endGame");
 		} else {
