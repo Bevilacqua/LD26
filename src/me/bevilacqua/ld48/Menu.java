@@ -15,7 +15,7 @@ public class Menu extends BasicGameState {
 	public boolean startUp = false;
 	
 	private int elapsedTime;
-	private final int Delay = 5000;
+	private final int Delay = 5500;
 	private int pictureID = 0;
 	
 	private Image decom;
@@ -62,7 +62,7 @@ public class Menu extends BasicGameState {
 			if(pictureID == 0 && elapsedTime > Delay) {
 				pictureID = 1;
 				elapsedTime = 0;
-			} if(pictureID == 1 && elapsedTime > Delay) {
+			} if(pictureID == 1 && elapsedTime > Delay * 2) {
 				sbg.enterState(Game.playId);
 			}
 			elapsedTime += Delta;
