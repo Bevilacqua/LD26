@@ -27,7 +27,7 @@ public class Level {
 	public boolean preMode = true; //I know i shouldn't do this sorry Java gods have mercy
 	private Image diary;
 	private String diaryPath;
-	private int diaryDELAY = 6000;
+	private int diaryDELAY = 10000;
 	private int diaryElapsedTime;
 	
 	public Level(String mapPath , String Name , String musicPath , int timer  , String diaryPath) throws SlickException {
